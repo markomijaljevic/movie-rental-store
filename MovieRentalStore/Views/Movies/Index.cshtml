@@ -1,0 +1,28 @@
+﻿@model MovieRentalStore.ViewModel.MoviesViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Movies</h2>
+
+@if (Model.Movies.Count == 0)
+{
+    <p>There are no movies yet!</p>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <tr>
+            <th>Movie</th>
+        </tr>
+        @foreach (var movies in Model.Movies)
+        {
+            <tr>
+                <td>@movies.Name</td>
+            </tr>
+        }
+    </table>
+}
+
