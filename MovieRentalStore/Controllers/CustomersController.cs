@@ -10,43 +10,39 @@ namespace MovieRentalStore.Controllers
 {
     public class CustomersController : Controller
     {
-        // GET: Customers
+
+        private ApplicationDbContext _context;
+
+        public CustomersController()
+        {
+            _context = new ApplicationDbContext();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            _context.Dispose();
+        }
 
         public ActionResult Index()
         {
-            var customers = new List<Customer>
+            var customers = new CustomersViewModel()
             {
-                new Customer {Id = 1, Name = "Lucas Mora"},
-                new Customer {Id = 2, Name = "Mark Mora"},
-                new Customer {Id = 3, Name = "Thomas Neil"}
+                Customers =  _context.Customers
             };
 
-            var viewModel = new CustomersViewModel
-            {
-                Customers = customers
-            };
-            
-            return View(viewModel);
+            return View(customers);
         }
 
         [Route("Customers/Details/{id}")]
         public ActionResult CustomerDetails(int id)
         {
+            var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
 
-            var customers = new List<Customer>
-            {
-                new Customer {Id = 1, Name = "Lucas Mora"},
-                new Customer {Id = 2, Name = "Mark Mora"},
-                new Customer {Id = 3, Name = "Thomas Neil"}
-            };
+            if (customer == null)
+                return HttpNotFound();
 
-            foreach (var customer in customers)
-            {
-                if (customer.Id == id)
-                    return View(customer);
-            }
-
-            return HttpNotFound();
+            return View(customer);
+     
         }
 
     }
