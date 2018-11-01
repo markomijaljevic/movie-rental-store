@@ -1,4 +1,4 @@
-﻿@model MovieRentalStore.ViewModel.CustomersViewModel
+﻿@model IEnumerable<MovieRentalStore.Models.Customer>
 
 @{
     ViewBag.Title = "Index";
@@ -8,19 +8,23 @@
 <h2>Customers</h2>
 
 
-@if (!(Model.Customers.Any()))
+@if (!(Model.Any()))
 {
     <p>There are no Customers yet!</p>
 }
 else
 {
     <table class="table table-bordered table-hover">
-        <tr><th>Customer</th></tr>
+        <tr>
+            <th>Customer</th>
+            <th>Discount Rate</th>
+        </tr>
 
-        @foreach (var customer in Model.Customers)
+        @foreach (var customer in Model)
         {
             <tr>
                 <td><a href="Customers/Details/@customer.Id">@customer.Name</a></td>
+                <td>@customer.MembershipType.DiscountRate%</td>
             </tr>
         }
 

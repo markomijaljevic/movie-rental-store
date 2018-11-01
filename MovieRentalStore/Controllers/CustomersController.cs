@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using MovieRentalStore.Models;
 using MovieRentalStore.ViewModel;
+using System.Data.Entity;
 
 namespace MovieRentalStore.Controllers
 {
@@ -25,11 +26,8 @@ namespace MovieRentalStore.Controllers
 
         public ActionResult Index()
         {
-            var customers = new CustomersViewModel()
-            {
-                Customers =  _context.Customers
-            };
 
+            var customers = _context.Customers.Include(c => c.MembershipType);
             return View(customers);
         }
 
