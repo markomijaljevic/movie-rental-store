@@ -30,6 +30,15 @@ namespace MovieRentalStore.Controllers
             return View(customers);
         }
 
+        [HttpPost]
+        public ActionResult Create(Customer customer)
+        {
+            _context.Customers.Add(customer);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Customers");
+        }
+
         [Route("Customers/Details/{id}")]
         public ActionResult CustomerDetails(int id)
         {
@@ -39,7 +48,16 @@ namespace MovieRentalStore.Controllers
                 return HttpNotFound();
 
             return View(customer);
-     
+        }
+         
+        public ViewResult New()
+        {
+            var viewModel = new NewCustomerViewModel
+            {
+                MembershipTypes = _context.MembershipType
+            };
+            
+            return View(viewModel);
         }
 
     }
