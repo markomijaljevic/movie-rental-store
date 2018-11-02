@@ -1,5 +1,4 @@
-﻿@model MovieRentalStore.ViewModel.MoviesViewModel
-
+﻿@model IEnumerable<MovieRentalStore.Models.Movies>
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,7 +6,7 @@
 
 <h2>Movies</h2>
 
-@if (Model.Movies.Count == 0)
+@if (!(Model.Any()))
 {
     <p>There are no movies yet!</p>
 }
@@ -16,11 +15,13 @@ else
     <table class="table table-bordered table-hover">
         <tr>
             <th>Movie</th>
+            <th>Genre</th>
         </tr>
-        @foreach (var movies in Model.Movies)
+        @foreach (var movies in Model)
         {
             <tr>
-                <td>@movies.Name</td>
+                <td><a href="/Movies/Details/@movies.Id">@movies.Name</a></td>
+                <td>@movies.Genre.Name</td>
             </tr>
         }
     </table>

@@ -6,51 +6,40 @@ using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
 using MovieRentalStore.Models;
 using MovieRentalStore.ViewModel;
+using System.Data.Entity;
 
 namespace MovieRentalStore.Controllers
 {
     public class MoviesController : Controller
     {
-        // GET: Movies
-        public ActionResult Random()
+
+        private ApplicationDbContext _context;
+
+        public MoviesController()
         {
-            var movie = new Movies() {Name = "Iron Man"};
-            var customers = new List<Customer>
-            {
-                new Customer {Name = "Marko"},
-                new Customer {Name = "Luka"}
-            };
-
-            var viewModel = new RandomMovieViewModel()
-            {
-                Movie = movie,
-                Customers = customers 
-            };
-
-            return View(viewModel);
+            _context = new ApplicationDbContext();
         }
 
-        [Route("movies/released/{year:regex(\\d{4}):range(2000,2018)}/{month:regex(\\d{2}):range(1,12)}")]
-        public ActionResult ByReleaseDate(int year, byte month)
+        protected override void Dispose(bool disposing)
         {
-            return Content(year + "/" + month);
+            _context.Dispose();
+        }
+
+
+        [Route("Movies/Details/{id}")]
+        public ViewResult MovieDetails(int id)
+        {
+            var movie = _context.Movies.Include(c => c.Genre).SingleOrDefault(c => c.Id == id);
+
+            return View(movie);
         }
 
         public ActionResult Index()
         {
-            var movies = new List<Movies>
-            {
-                new Movies {Id = 1, Name = "Iron Man"},
-                new Movies {Id = 1, Name = "Batman"},
-                new Movies {Id = 1, Name = "Gravity"}
-            };
 
-            var viewModel = new MoviesViewModel
-            {
-                Movies = movies
-            };
+            var movies = _context.Movies.Include(c => c.Genre);
 
-            return View(viewModel);
+            return View(movies);
         }
     }
 }
