@@ -272,6 +272,7 @@
     <Compile Include="ViewModel\CustomersViewModel.cs" />
     <Compile Include="ViewModel\MoviesViewModel.cs" />
     <Compile Include="ViewModel\NewCustomerViewModel.cs" />
+    <Compile Include="ViewModel\NewMovieViewModel.cs" />
     <Compile Include="ViewModel\RandomMovieViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -339,6 +340,7 @@
     <Content Include="Views\Movies\Index.cshtml" />
     <Content Include="Views\Movies\MovieDetails.cshtml" />
     <Content Include="Views\Customers\New.cshtml" />
+    <Content Include="Views\Movies\New.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
