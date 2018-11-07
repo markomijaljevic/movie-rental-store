@@ -17,7 +17,9 @@ namespace MovieRentalStore.Models
         public bool IsSubscribedToNewsLetter { get; set; }
         public MembershipType MembershipType { get; set; }
 
+
         [Display(Name = "Date of Birth")]
+        [Min18YearsOld]
         public DateTime? Birthdate { get; set; }
 
          [Display(Name = "Membership Type")]
