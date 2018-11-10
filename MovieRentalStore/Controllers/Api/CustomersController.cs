@@ -23,9 +23,9 @@ namespace MovieRentalStore.Controllers.Api
         }
 
         //GET /api/customers
-        public IEnumerable<CustomerDto> GetCustomers()
+        public IHttpActionResult GetCustomers()
         {
-            return _context.Customers.ToList().Select(Mapper.Map<Customer,CustomerDto>);
+            return Ok(_context.Customers.ToList().Select(Mapper.Map<Customer,CustomerDto>));
         }
 
         //GET /api/customers/1
@@ -36,7 +36,7 @@ namespace MovieRentalStore.Controllers.Api
             if (customer == null)
                 return NotFound();
 
-            return Ok(Mapper.Map<Customer,CustomerDto>(customer)));
+            return Ok(Mapper.Map<Customer,CustomerDto>(customer));
         }
 
         //POST /api/customers
@@ -57,32 +57,35 @@ namespace MovieRentalStore.Controllers.Api
 
         // PUT /api/customers/1
         [System.Web.Http.HttpPut]
-        public void UpdateCustomer(int id, CustomerDto customerDto)
+        public IHttpActionResult UpdateCustomer(int id, CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var customerInDb = _context.Customers.SingleOrDefault(c => c.Id == id);
 
-            if(customerInDb == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+            if (customerInDb == null)
+                return NotFound();
 
             Mapper.Map(customerDto, customerInDb);
-
             _context.SaveChanges();
+
+            return Ok();
         }
 
         //DELETE /api/customers/1
         [System.Web.Http.HttpDelete]
-        public void DeleteCustomer(int id)
+        public IHttpActionResult DeleteCustomer(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
 
-            if( customer == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+            if (customer == null)
+                return NotFound();
 
             _context.Customers.Remove(customer);
             _context.SaveChanges();
+
+            return Ok();
         }
 
     }
