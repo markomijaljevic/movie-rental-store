@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Mvc;
 using AutoMapper;
+using Microsoft.Owin.Security.Provider;
 using MovieRentalStore.Dtos;
 using MovieRentalStore.Models;
 
@@ -28,22 +29,22 @@ namespace MovieRentalStore.Controllers.Api
         }
 
         //GET /api/customers/1
-        public CustomerDto GetCustomer(int id)
+        public IHttpActionResult GetCustomer(int id)
         {
             var customer = _context.Customers.SingleOrDefault(c => c.Id == id);
 
-            if( customer == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
+            if (customer == null)
+                return NotFound();
 
-            return Mapper.Map<Customer,CustomerDto>(customer);
+            return Ok(Mapper.Map<Customer,CustomerDto>(customer)));
         }
 
         //POST /api/customers
         [System.Web.Http.HttpPost]
-        public CustomerDto CreateCustomer(CustomerDto customerDto)
+        public IHttpActionResult CreateCustomer(CustomerDto customerDto)
         {
             if (!ModelState.IsValid)
-                throw new HttpResponseException(HttpStatusCode.BadRequest);
+                return BadRequest();
 
             var customer = Mapper.Map<CustomerDto, Customer>(customerDto);
 
@@ -51,7 +52,7 @@ namespace MovieRentalStore.Controllers.Api
             _context.SaveChanges();
 
             customerDto.Id = customer.Id;
-            return customerDto;
+            return Created(new Uri(Request.RequestUri + "/" + customer.Id), customerDto);
         }
 
         // PUT /api/customers/1
