@@ -34,19 +34,6 @@ namespace MovieRentalStore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Save(Customer customer)
         {
-
-            if (!ModelState.IsValid)
-            {
-                var viewModel = new NewCustomerViewModel
-                {
-                    Customer = customer,
-                    MembershipTypes = _context.MembershipType
-                };
-                
-                return View("New", viewModel);
-            }
-
-
             if(customer.Id == 0)
                 _context.Customers.Add(customer);
             else
